@@ -1,0 +1,34 @@
+stages:
+  prepare_data:
+    cmd: python scripts/prepare_data.py
+    deps:
+      - data/raw_data.csv
+    outs:
+      - data/cleaned_data.csv
+
+  train_model:
+    cmd: python scripts/train_model.py
+    deps:
+      - data/cleaned_data.csv
+    params:
+      - params.yaml:model_params
+    outs:
+      - model/rf_model.pkl
+    metrics:
+      - metrics/accuracy.json
+
+  evaluate_model:
+    cmd: python scripts/evaluate_model.py
+    deps:
+      - model/rf_model.pkl
+      - data/cleaned_data.csv
+    metrics:
+      - metrics/classification_report.json
+      - metrics/conf_matrix.png
+
+  visualize_confusion_matrix:
+    cmd: python scripts/plot_confusion_matrix.py
+    deps:
+      - metrics/classification_report.json
+    outs:
+      - plots/conf_matrix.png
