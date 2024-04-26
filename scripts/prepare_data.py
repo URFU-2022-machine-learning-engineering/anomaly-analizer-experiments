@@ -77,8 +77,8 @@ def load_and_prepare_data(params: dict):
 
 def main():
     params_path = Path(__file__).parents[1] / "params" / "params.yaml"
-    prepared_df_path = Path("../data/prepared_data.csv").absolute()
-    df_path = Path("../data/full_upload_spans.csv").absolute()
+    prepared_df_path = Path(__file__).parents[1] / 'data' / 'prepared_data.csv'
+    df_path = Path(__file__).parents[1] / "data" / "enriched_spans.csv"
 
     with open(params_path, 'r') as f:
         params = yaml.safe_load(f)
