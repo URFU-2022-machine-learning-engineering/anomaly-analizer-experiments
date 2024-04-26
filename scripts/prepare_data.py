@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 
 
-def add_anomalies(df_path: Path, params: dict):
+def mark_anomalies(df_path: Path, params: dict, save_path: Path):
     df = pd.read_csv(df_path, low_memory=False)
     df.dropna(subset=["startTime"], inplace=True)
     df["startTime"] = pd.to_datetime(df["startTime"])
@@ -32,14 +32,14 @@ def add_anomalies(df_path: Path, params: dict):
 
     # Apply anomaly marking to the entire dataset
     df['anomaly'] = df['traceID'].isin(anomalous_trace_ids)
-
+    
     # Save the dataset with anomalies marked
-    df.to_csv("data_with_anomalies.csv", index=False)
+    df.to_csv(save_path, index=False)
 
 
-def load_and_prepare_data(params: dict):
+def load_and_prepare_data(params: dict, df_anomalies_path: Path):
     # Load the dataset with anomalies marked
-    df = pd.read_csv("data_with_anomalies.csv", low_memory=False)
+    df = pd.read_csv(df_anomalies_path, low_memory=False)
 
     epsilon = 1e-9
     df['span_duration_per_file_size'] = df['duration'] / (df['tag_minio.file.size'] + epsilon)
@@ -79,12 +79,13 @@ def main():
     params_path = Path(__file__).parents[1] / "params" / "params.yaml"
     prepared_df_path = Path(__file__).parents[1] / 'data' / 'prepared_data.csv'
     df_path = Path(__file__).parents[1] / "data" / "enriched_spans.csv"
+    df_with_anomalies = Path(__file__).parents[1] / "data" / "data_with_anomalies.csv"
 
     with open(params_path, 'r') as f:
         params = yaml.safe_load(f)
 
-    add_anomalies(df_path=df_path, params=params["prepare_params"])  # First function call to add anomalies
-    prepared_df = load_and_prepare_data(params=params["prepare_params"])  # Second function to load and further prepare data
+    mark_anomalies(df_path=df_path, params=params["prepare_params"], save_path=df_with_anomalies)  # First function call to add anomalies
+    prepared_df = load_and_prepare_data(params=params["prepare_params"], df_anomalies_path=df_with_anomalies)  # Second function to load and further prepare data
     prepared_df.to_csv(prepared_df_path, index=False)
 
 
