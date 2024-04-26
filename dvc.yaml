@@ -2,8 +2,9 @@ stages:
   prepare_data:
     cmd: python scripts/prepare_data.py
     deps:
-      - data/full_upload_spans.csv
+      - data/enriched_spans.csv
     outs:
+      - data/data_with_anomalies.csv
       - data/prepared_data.csv
 
   train_model:
