@@ -42,7 +42,7 @@ def main():
     data_path = Path(__file__).parents[1] / 'data' / 'prepared_data.csv'
     model_path = Path(__file__).parents[1] / 'model' / 'rf_model.pkl'
     encoders_path = Path(__file__).parents[1] / 'model' / 'encoders.pkl'
-    params_path = Path(__file__).parents[1] / "params" / "params.yaml"
+    params_path = Path(__file__).parents[1] / "params.yaml"
     with open(params_path, 'r') as f:
         params = yaml.safe_load(f)
     train_model(data_path=data_path, model_path=model_path, encoders_path=encoders_path, params=params['model_params'])

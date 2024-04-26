@@ -76,7 +76,7 @@ def load_and_prepare_data(params: dict, df_anomalies_path: Path):
 
 
 def main():
-    params_path = Path(__file__).parents[1] / "params" / "params.yaml"
+    params_path = Path(__file__).parents[1] / "params.yaml"
     prepared_df_path = Path(__file__).parents[1] / 'data' / 'prepared_data.csv'
     df_path = Path(__file__).parents[1] / "data" / "enriched_spans.csv"
     df_with_anomalies = Path(__file__).parents[1] / "data" / "data_with_anomalies.csv"
