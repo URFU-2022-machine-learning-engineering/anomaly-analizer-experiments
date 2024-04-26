@@ -2,14 +2,14 @@ stages:
   prepare_data:
     cmd: python scripts/prepare_data.py
     deps:
-      - data/raw_data.csv
+      - data/full_upload_spans.csv
     outs:
-      - data/cleaned_data.csv
+      - data/prepared_data.csv
 
   train_model:
     cmd: python scripts/train_model.py
     deps:
-      - data/cleaned_data.csv
+      - data/prepared_data.csv
     params:
       - params.yaml:model_params
     outs:
