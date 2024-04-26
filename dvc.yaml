@@ -12,7 +12,10 @@ stages:
     deps:
       - data/prepared_data.csv
     params:
-      - params.yaml:model_params
+      - model_params.n_estimators
+      - model_params.random_state
+      - model_params.n_jobs
+      - model_params.max_depth
     outs:
       - model/rf_model.pkl
     metrics:
