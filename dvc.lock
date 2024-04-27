@@ -1,0 +1,60 @@
+schema: '2.0'
+stages:
+  prepare_data:
+    cmd: python scripts/prepare_data.py
+    deps:
+    - path: data/enriched_spans.csv
+      hash: md5
+      md5: abc024511575cf06671faf4f5cf135d1
+      size: 255046768
+    outs:
+    - path: data/data_with_anomalies.csv
+      hash: md5
+      md5: 62a00c8c38bea585b3f74c386fd802ed
+      size: 147899351
+    - path: data/prepared_data.csv
+      hash: md5
+      md5: 9334e0ee00dce092a7253c02b99d3ef6
+      size: 151853561
+  train_model:
+    cmd: python scripts/train_model.py
+    deps:
+    - path: data/prepared_data.csv
+      hash: md5
+      md5: 9334e0ee00dce092a7253c02b99d3ef6
+      size: 151853561
+    params:
+      params.yaml:
+        model_params.max_depth: 15
+        model_params.n_estimators: 100
+        model_params.n_jobs: -1
+        model_params.random_state: 42
+    outs:
+    - path: model/rf_model.pkl
+      hash: md5
+      md5: dd31d1634d097d615452b1a73c5608a3
+      size: 6095607
+  evaluate_model:
+    cmd: python scripts/evaluate_model.py
+    deps:
+    - path: data/prepared_data.csv
+      hash: md5
+      md5: 9334e0ee00dce092a7253c02b99d3ef6
+      size: 151853561
+    - path: model/rf_model.pkl
+      hash: md5
+      md5: dd31d1634d097d615452b1a73c5608a3
+      size: 6095607
+    outs:
+    - path: metrics/accuracy.json
+      hash: md5
+      md5: 640b24e2bc0d05c81c456cec147e6489
+      size: 32
+    - path: metrics/classification_report.json
+      hash: md5
+      md5: 6a523e449944879ec72b7181a96aa962
+      size: 326
+    - path: metrics/confusion_matrix.json
+      hash: md5
+      md5: 9350c26fd16361747eb59e7ef20a790a
+      size: 30

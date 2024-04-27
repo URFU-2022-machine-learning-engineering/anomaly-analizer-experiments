@@ -18,21 +18,13 @@ stages:
       - model_params.max_depth
     outs:
       - model/rf_model.pkl
-    metrics:
-      - metrics/accuracy.json
 
   evaluate_model:
     cmd: python scripts/evaluate_model.py
     deps:
       - model/rf_model.pkl
-      - data/cleaned_data.csv
+      - data/prepared_data.csv
     metrics:
       - metrics/classification_report.json
-      - metrics/conf_matrix.png
-
-  visualize_confusion_matrix:
-    cmd: python scripts/plot_confusion_matrix.py
-    deps:
-      - metrics/classification_report.json
-    outs:
-      - plots/conf_matrix.png
+      - metrics/accuracy.json
+      - metrics/confusion_matrix.json
