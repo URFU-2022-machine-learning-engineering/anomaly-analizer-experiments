@@ -56,8 +56,7 @@ def load_and_prepare_data(params: dict, df_anomalies_path: Path):
             return np.nan
 
     upload_spans['matched_file_size'] = upload_spans.apply(get_file_size_from_upload_to_minio, axis=1)
-    upload_spans['upload_duration_per_file_size'] = upload_spans['duration'] / (
-            upload_spans['matched_file_size'] + epsilon)
+    upload_spans['upload_duration_per_file_size'] = upload_spans['duration'] / (upload_spans['matched_file_size'] + epsilon)
 
     df.loc[upload_spans.index, 'upload_duration_per_file_size'] = upload_spans['upload_duration_per_file_size']
     df['upload_duration_per_file_size'] = df['upload_duration_per_file_size'].fillna(0)
