@@ -41,9 +41,17 @@ def evaluate_model(model, label_encoders, data_path):
         json.dump({"accuracy": accuracy}, f)
     with open(metrics_dir / 'classification_report.json', 'w') as f:
         json.dump(report, f)
-    conf_matrix_json = json.dumps(conf_matrix.tolist())
+    data = []
+    labels = ['Non-anomalous', 'Anomalous']
+    for i, row in enumerate(conf_matrix):
+        for j, value in enumerate(row):
+            data.append({
+                "actual": labels[i],
+                "predicted": labels[j],
+                "count": value
+            })
     with open(metrics_dir / 'confusion_matrix.json', 'w') as f:
-        f.write(conf_matrix_json)
+        json.dump(data, f)
 
     # Save feature importances
     if isinstance(model, RandomForestClassifier):

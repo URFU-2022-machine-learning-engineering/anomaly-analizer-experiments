@@ -30,12 +30,12 @@ stages:
     plots:
       - metrics/confusion_matrix.json:
           template: confusion
-          x: actual
-          y: predicted
+          x: labels
+          y: labels
       - metrics/feature_importances.csv:
           template: bar_horizontal_sorted
-          x: features
-          y: importances
+          x: Importance
+          y: Feature
           title: 'Feature Importances'
-          x_label: 'Features'
-          y_label: 'Importance'
+          x_label: "Importance"
+          y_label: "Features"
