@@ -32,7 +32,7 @@ def mark_anomalies(df_path: Path, params: dict, save_path: Path):
 
     # Apply anomaly marking to the entire dataset
     df['anomaly'] = df['traceID'].isin(anomalous_trace_ids)
-    
+
     # Save the dataset with anomalies marked
     df.to_csv(save_path, index=False)
 

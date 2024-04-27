@@ -28,11 +28,11 @@ def evaluate_model(model, label_encoders, data_path):
     df = df.drop(columns=['spanID', 'traceID', 'tag_http.client_ip', 'tag_otel.status_description', 'tag_user_agent.original'])
 
     X = df.drop(columns=['anomaly'])  # Exclude the target variable for predictions
-    y = df['anomaly']  # Actual labels
+    y = df['anomaly']
 
     y_pred = model.predict(X)
     accuracy = accuracy_score(y, y_pred)
-    report = classification_report(y, y_pred)
+    report = classification_report(y, y_pred, output_dict=True)
     conf_matrix = confusion_matrix(y, y_pred)
 
     # Save classification report and accuracy
@@ -40,9 +40,10 @@ def evaluate_model(model, label_encoders, data_path):
     with open(metrics_dir / 'accuracy.json', 'w') as f:
         json.dump({"accuracy": accuracy}, f)
     with open(metrics_dir / 'classification_report.json', 'w') as f:
-        f.write(report)
+        json.dump(report, f)
+    conf_matrix_json = json.dumps(conf_matrix.tolist())
     with open(metrics_dir / 'confusion_matrix.json', 'w') as f:
-        json.dump(conf_matrix.tolist(), f)
+        f.write(conf_matrix_json)
 
     # Save feature importances
     if isinstance(model, RandomForestClassifier):
