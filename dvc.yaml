@@ -32,8 +32,8 @@ stages:
           template: confusion
           x: actual
           y: predicted
-      - metrics/feature_importances.json:
-          template: default
+      - metrics/feature_importances.csv:
+          template: bar_horizontal_sorted
           x: features
           y: importances
           title: 'Feature Importances'

@@ -48,12 +48,13 @@ def evaluate_model(model, label_encoders, data_path):
     # Save feature importances
     if isinstance(model, RandomForestClassifier):
         feature_importances = model.feature_importances_
-        feature_importance_data = {
-            "features": list(X.columns),
-            "importances": feature_importances.tolist()
-        }
-        with open(metrics_dir / 'feature_importances.json', 'w') as f:
-            json.dump(feature_importance_data, f)
+        features = X.columns
+        feature_importance_df = pd.DataFrame({
+            'Feature': features,
+            'Importance': feature_importances
+        })
+        feature_importance_df.sort_values(by='Importance', ascending=False, inplace=True)
+        feature_importance_df.to_csv(metrics_dir / 'feature_importances.csv', index=False)
 
 
 def main():
