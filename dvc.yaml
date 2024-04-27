@@ -27,4 +27,15 @@ stages:
     metrics:
       - metrics/classification_report.json
       - metrics/accuracy.json
-      - metrics/confusion_matrix.json
+    plots:
+      - metrics/confusion_matrix.json:
+          template: confusion
+          x: actual
+          y: predicted
+      - metrics/feature_importances.json:
+          template: default
+          x: features
+          y: importances
+          title: 'Feature Importances'
+          x_label: 'Features'
+          y_label: 'Importance'

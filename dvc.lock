@@ -58,3 +58,7 @@ stages:
       hash: md5
       md5: 9350c26fd16361747eb59e7ef20a790a
       size: 30
+    - path: metrics/feature_importances.json
+      hash: md5
+      md5: bb0a07cc8a8d89879fae5f62959fefef
+      size: 779

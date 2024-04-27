@@ -1,10 +1,9 @@
 from pathlib import Path
-
 import pandas as pd
 import pickle
+import json
 from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
-import matplotlib.pyplot as plt
-import seaborn as sns
+from sklearn.ensemble import RandomForestClassifier
 
 
 def load_model(model_path, encoders_path):
@@ -22,10 +21,11 @@ def apply_encoders(df, label_encoders):
 
 
 def evaluate_model(model, label_encoders, data_path):
+    metrics_dir = Path(__file__).parents[1] / 'metrics'
+
     df = pd.read_csv(data_path, low_memory=False)
     df = apply_encoders(df, label_encoders)
-    df = df.drop(
-        columns=['spanID', 'traceID', 'tag_http.client_ip', 'tag_otel.status_description', 'tag_user_agent.original'])
+    df = df.drop(columns=['spanID', 'traceID', 'tag_http.client_ip', 'tag_otel.status_description', 'tag_user_agent.original'])
 
     X = df.drop(columns=['anomaly'])  # Exclude the target variable for predictions
     y = df['anomaly']  # Actual labels
@@ -33,19 +33,26 @@ def evaluate_model(model, label_encoders, data_path):
     y_pred = model.predict(X)
     accuracy = accuracy_score(y, y_pred)
     report = classification_report(y, y_pred)
-    metrics_dir = Path(__file__).parents[1] / 'metrics'
-    with open(f"{metrics_dir}/accuracy.json", 'w') as f:
-        f.write(f'{{"accuracy": {accuracy}}}')
-    with open(f"{metrics_dir}/classification_report.json", 'w') as f:
-        f.write(report)
-
     conf_matrix = confusion_matrix(y, y_pred)
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
-    plt.xlabel('Predicted')
-    plt.ylabel('True')
-    plt.title('Confusion Matrix')
-    plt.savefig(f"{metrics_dir}/conf_matrix.png")
+
+    # Save classification report and accuracy
+    metrics_dir = Path('metrics')
+    with open(metrics_dir / 'accuracy.json', 'w') as f:
+        json.dump({"accuracy": accuracy}, f)
+    with open(metrics_dir / 'classification_report.json', 'w') as f:
+        f.write(report)
+    with open(metrics_dir / 'confusion_matrix.json', 'w') as f:
+        json.dump(conf_matrix.tolist(), f)
+
+    # Save feature importances
+    if isinstance(model, RandomForestClassifier):
+        feature_importances = model.feature_importances_
+        feature_importance_data = {
+            "features": list(X.columns),
+            "importances": feature_importances.tolist()
+        }
+        with open(metrics_dir / 'feature_importances.json', 'w') as f:
+            json.dump(feature_importance_data, f)
 
 
 def main():
