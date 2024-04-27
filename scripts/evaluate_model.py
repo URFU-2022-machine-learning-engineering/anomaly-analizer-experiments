@@ -48,7 +48,7 @@ def evaluate_model(model, label_encoders, data_path):
             data.append({
                 "actual": labels[i],
                 "predicted": labels[j],
-                "count": value
+                "count": int(value)  # Convert to native int type
             })
     with open(metrics_dir / 'confusion_matrix.json', 'w') as f:
         json.dump(data, f)
