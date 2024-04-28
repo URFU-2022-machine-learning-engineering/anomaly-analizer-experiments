@@ -28,10 +28,10 @@ stages:
       - metrics/classification_report.json
       - metrics/accuracy.json
     plots:
-      - metrics/confusion_matrix.json:
+      - metrics/confusion_matrix.csv:
+          x: Anomalous
+          y: Non-anomalous
           template: confusion
-          x: actual
-          y: predicted
       - metrics/feature_importances.csv:
           template: bar_horizontal_sorted
           x: Importance

@@ -25,15 +25,15 @@ stages:
       size: 151853561
     params:
       params.yaml:
-        model_params.max_depth: 3
+        model_params.max_depth: 1
         model_params.n_estimators: 100
         model_params.n_jobs: -1
         model_params.random_state: 42
     outs:
     - path: model/rf_model.pkl
       hash: md5
-      md5: 844883781c81b5d0ad55920d5af75445
-      size: 112795
+      md5: 15d6d27fe776d295a7d1ee8f6b7b3e4a
+      size: 55686
   evaluate_model:
     cmd: python scripts/evaluate_model.py
     deps:
@@ -43,22 +43,22 @@ stages:
       size: 151853561
     - path: model/rf_model.pkl
       hash: md5
-      md5: 844883781c81b5d0ad55920d5af75445
-      size: 112795
+      md5: 15d6d27fe776d295a7d1ee8f6b7b3e4a
+      size: 55686
     outs:
     - path: metrics/accuracy.json
       hash: md5
-      md5: e1d7d1a358c91ffb014256143924de08
+      md5: 0deda611587f2d0f8549a710072f59f2
       size: 32
     - path: metrics/classification_report.json
       hash: md5
-      md5: bd8368aa2be4cf3a12a16657889a36fd
-      size: 542
-    - path: metrics/confusion_matrix.json
+      md5: 8d88be0c745be6ea656465988552b730
+      size: 511
+    - path: metrics/confusion_matrix.csv
       hash: md5
-      md5: 94961363e75664986848aba1c315226a
-      size: 281
+      md5: abb138415d1cd9c6a4ca98c235792330
+      size: 70
     - path: metrics/feature_importances.csv
       hash: md5
-      md5: cac24d466c3a68e6a07f7872d4aebd27
-      size: 696
+      md5: a3e36ff13f79f1ef5d1c574918ff488d
+      size: 584
