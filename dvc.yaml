@@ -1,4 +1,8 @@
 stages:
+  load_data:
+    cmd: bash scripts/load_data.sh
+    outs:
+      - data/enriched_spans.csv
   prepare_data:
     cmd: python scripts/prepare_data.py
     deps:
