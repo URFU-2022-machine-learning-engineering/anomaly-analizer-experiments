@@ -21,11 +21,12 @@ def mark_anomalies(df_path: Path, params: dict, save_path: Path):
     condition_http_status = df['tag_http.status_code'] >= params["status_code"]
     condition_duration = df['duration'] >= params["duration"]  # Assuming duration is in microseconds
     condition_specific_user = (df['tag_http.client_ip'] == params["ip_address"]) & \
-                              (df['tag_user_agent.original'] == params["ua"])
+                              (df['tag_user_agent.original'] == params["ua"][0])
+    condition_specific_user_agent = (df['tag_user_agent.original'] == params["ua"][1])
     condition_status_or_error = (df['tag_otel.status_code'] == 'ERROR') | (df['tag_error'] == True)
 
     # Combine conditions
-    anomalies = condition_http_status | condition_duration | condition_specific_user | condition_status_or_error
+    anomalies = condition_http_status | condition_duration | condition_specific_user | condition_status_or_error | condition_specific_user_agent
 
     # Mark trace IDs as anomalous
     anomalous_trace_ids = df.loc[anomalies, 'traceID'].unique()

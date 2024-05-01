@@ -10,19 +10,19 @@ stages:
     outs:
     - path: data/data_with_anomalies.csv
       hash: md5
-      md5: 5ee48d90f1c08d0ed78b7e4da67e3e86
-      size: 181226884
+      md5: b660d48a91a5ffd5a0d608e90e64aafc
+      size: 181225469
     - path: data/prepared_data.csv
       hash: md5
-      md5: 35eb66f2b03b21521e86c325e67daa1f
-      size: 186018755
+      md5: cb4124b4ee0a14c475443efe0828a4b2
+      size: 186017340
   train_model:
     cmd: python scripts/train_model.py
     deps:
     - path: data/prepared_data.csv
       hash: md5
-      md5: 35eb66f2b03b21521e86c325e67daa1f
-      size: 186018755
+      md5: cb4124b4ee0a14c475443efe0828a4b2
+      size: 186017340
     params:
       params.yaml:
         model_params.max_depth: 1
@@ -36,36 +36,36 @@ stages:
       size: 30446542
     - path: model/rf_model.pkl
       hash: md5
-      md5: 33b91d8d12aa6939bc5e7397b7ccc3f7
-      size: 55686
+      md5: 9385ee833a152972f8479a563a0f091b
+      size: 55765
   evaluate_model:
     cmd: python scripts/evaluate_model.py
     deps:
     - path: data/prepared_data.csv
       hash: md5
-      md5: 35eb66f2b03b21521e86c325e67daa1f
-      size: 186018755
+      md5: cb4124b4ee0a14c475443efe0828a4b2
+      size: 186017340
     - path: model/rf_model.pkl
       hash: md5
-      md5: 33b91d8d12aa6939bc5e7397b7ccc3f7
-      size: 55686
+      md5: 9385ee833a152972f8479a563a0f091b
+      size: 55765
     outs:
     - path: metrics/accuracy.json
       hash: md5
-      md5: 97c25c9848e354cc80e16adc611f326e
+      md5: f58d39ed05c55d7d28c857cffba2a1e0
       size: 32
     - path: metrics/classification_report.json
       hash: md5
-      md5: 5caea507526566fbc3e8149317d0e14a
-      size: 510
+      md5: 1f85b9b6ed49c1c3aa21da971682119c
+      size: 512
     - path: metrics/confusion_matrix.csv
       hash: md5
-      md5: 3fc1e4e853275220e4dde65502e9688a
+      md5: 9200949d77ce0ad4e3faced0be20049a
       size: 70
     - path: metrics/feature_importances.csv
       hash: md5
-      md5: e224a7f1f52d5be9e7fa81634f12538f
-      size: 416
+      md5: bc0b121cd68ff540d05beff04056203c
+      size: 415
   load_data:
     cmd: bash scripts/load_data.sh
     outs:
