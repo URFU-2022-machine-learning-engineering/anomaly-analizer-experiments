@@ -30,6 +30,10 @@ stages:
         model_params.n_jobs: -1
         model_params.random_state: 42
     outs:
+    - path: model/encoders.pkl
+      hash: md5
+      md5: e82b7b431a6a7e3b9e11649fdf7dd98c
+      size: 30446542
     - path: model/rf_model.pkl
       hash: md5
       md5: 33b91d8d12aa6939bc5e7397b7ccc3f7

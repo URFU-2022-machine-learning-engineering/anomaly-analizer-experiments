@@ -21,6 +21,7 @@ stages:
       - model_params.n_jobs
       - model_params.max_depth
     outs:
+      - model/encoders.pkl
       - model/rf_model.pkl
 
   evaluate_model:
