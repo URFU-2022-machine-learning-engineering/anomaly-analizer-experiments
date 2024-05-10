@@ -60,9 +60,9 @@ def evaluate_model(model, label_encoders, data_path):
 
 
 def main():
-    model_path = Path(__file__).parents[1] / 'model' / 'rf_model.pkl'
-    encoders_path = Path(__file__).parents[1] / 'model' / 'encoders.pkl'
-    data_path = Path(__file__).parents[1] / 'data' / 'prepared_data.csv'
+    model_path = Path(__file__).parents[2] / 'model' / 'rf_model.pkl'
+    encoders_path = Path(__file__).parents[2] / 'model' / 'encoders.pkl'
+    data_path = Path(__file__).parents[2] / 'data' / 'prepared_data.csv'
     model, label_encoders = load_model(model_path=model_path, encoders_path=encoders_path)
     evaluate_model(model=model, label_encoders=label_encoders, data_path=data_path)
 

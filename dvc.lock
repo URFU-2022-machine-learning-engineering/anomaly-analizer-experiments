@@ -5,24 +5,24 @@ stages:
     deps:
     - path: data/enriched_spans.csv
       hash: md5
-      md5: abc024511575cf06671faf4f5cf135d1
-      size: 255046768
+      md5: b0a9631035c56d594ea7b55589d7c14b
+      size: 301464220
     outs:
     - path: data/data_with_anomalies.csv
       hash: md5
-      md5: 62a00c8c38bea585b3f74c386fd802ed
-      size: 147899351
+      md5: b660d48a91a5ffd5a0d608e90e64aafc
+      size: 181225469
     - path: data/prepared_data.csv
       hash: md5
-      md5: 9334e0ee00dce092a7253c02b99d3ef6
-      size: 151853561
+      md5: cb4124b4ee0a14c475443efe0828a4b2
+      size: 186017340
   train_model:
-    cmd: python scripts/train_model.py
+    cmd: python scripts/random_forest/train_model.py
     deps:
     - path: data/prepared_data.csv
       hash: md5
-      md5: 9334e0ee00dce092a7253c02b99d3ef6
-      size: 151853561
+      md5: cb4124b4ee0a14c475443efe0828a4b2
+      size: 186017340
     params:
       params.yaml:
         model_params.max_depth: 1
@@ -30,35 +30,46 @@ stages:
         model_params.n_jobs: -1
         model_params.random_state: 42
     outs:
+    - path: model/encoders.pkl
+      hash: md5
+      md5: e82b7b431a6a7e3b9e11649fdf7dd98c
+      size: 30446542
     - path: model/rf_model.pkl
       hash: md5
-      md5: 15d6d27fe776d295a7d1ee8f6b7b3e4a
-      size: 55686
+      md5: 9385ee833a152972f8479a563a0f091b
+      size: 55765
   evaluate_model:
-    cmd: python scripts/evaluate_model.py
+    cmd: python scripts/random_forest/evaluate_model.py
     deps:
     - path: data/prepared_data.csv
       hash: md5
-      md5: 9334e0ee00dce092a7253c02b99d3ef6
-      size: 151853561
+      md5: cb4124b4ee0a14c475443efe0828a4b2
+      size: 186017340
     - path: model/rf_model.pkl
       hash: md5
-      md5: 15d6d27fe776d295a7d1ee8f6b7b3e4a
-      size: 55686
+      md5: 9385ee833a152972f8479a563a0f091b
+      size: 55765
     outs:
     - path: metrics/accuracy.json
       hash: md5
-      md5: 0deda611587f2d0f8549a710072f59f2
+      md5: f58d39ed05c55d7d28c857cffba2a1e0
       size: 32
     - path: metrics/classification_report.json
       hash: md5
-      md5: 8d88be0c745be6ea656465988552b730
-      size: 511
+      md5: 1f85b9b6ed49c1c3aa21da971682119c
+      size: 512
     - path: metrics/confusion_matrix.csv
       hash: md5
-      md5: abb138415d1cd9c6a4ca98c235792330
+      md5: 9200949d77ce0ad4e3faced0be20049a
       size: 70
     - path: metrics/feature_importances.csv
       hash: md5
-      md5: a3e36ff13f79f1ef5d1c574918ff488d
-      size: 584
+      md5: bc0b121cd68ff540d05beff04056203c
+      size: 415
+  load_data:
+    cmd: bash scripts/load_data.sh
+    outs:
+    - path: data/enriched_spans.csv
+      hash: md5
+      md5: b0a9631035c56d594ea7b55589d7c14b
+      size: 301464220

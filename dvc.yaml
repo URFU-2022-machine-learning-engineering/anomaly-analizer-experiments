@@ -1,4 +1,8 @@
 stages:
+  load_data:
+    cmd: bash scripts/load_data.sh
+    outs:
+      - data/enriched_spans.csv
   prepare_data:
     cmd: python scripts/prepare_data.py
     deps:
@@ -8,7 +12,7 @@ stages:
       - data/prepared_data.csv
 
   train_model:
-    cmd: python scripts/train_model.py
+    cmd: python scripts/random_forest/train_model.py
     deps:
       - data/prepared_data.csv
     params:
@@ -17,10 +21,11 @@ stages:
       - model_params.n_jobs
       - model_params.max_depth
     outs:
+      - model/encoders.pkl
       - model/rf_model.pkl
 
   evaluate_model:
-    cmd: python scripts/evaluate_model.py
+    cmd: python scripts/random_forest/evaluate_model.py
     deps:
       - model/rf_model.pkl
       - data/prepared_data.csv
