@@ -12,7 +12,7 @@ stages:
       - data/prepared_data.csv
 
   train_model:
-    cmd: python scripts/train_model.py
+    cmd: python scripts/random_forest/train_model.py
     deps:
       - data/prepared_data.csv
     params:
@@ -25,7 +25,7 @@ stages:
       - model/rf_model.pkl
 
   evaluate_model:
-    cmd: python scripts/evaluate_model.py
+    cmd: python scripts/random_forest/evaluate_model.py
     deps:
       - model/rf_model.pkl
       - data/prepared_data.csv

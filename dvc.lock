@@ -17,7 +17,7 @@ stages:
       md5: cb4124b4ee0a14c475443efe0828a4b2
       size: 186017340
   train_model:
-    cmd: python scripts/train_model.py
+    cmd: python scripts/random_forest/train_model.py
     deps:
     - path: data/prepared_data.csv
       hash: md5
@@ -39,7 +39,7 @@ stages:
       md5: 9385ee833a152972f8479a563a0f091b
       size: 55765
   evaluate_model:
-    cmd: python scripts/evaluate_model.py
+    cmd: python scripts/random_forest/evaluate_model.py
     deps:
     - path: data/prepared_data.csv
       hash: md5
